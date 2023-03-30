@@ -2,10 +2,6 @@ from datetime import datetime, timedelta
 import jwt
 from pydantic import BaseModel, validator
 
-from logging import getLogger
-logger = getLogger(f'uvicorn.{__name__}')
-
-
 class JWTModel(BaseModel):
     private_key: bytes
     public_key: bytes
@@ -37,26 +33,25 @@ class JWTAuthen:
             self.private_key = self.config.private_key
             self.access_token_lifetime = timedelta(minutes=self.config.access_token_expire_minutes)
 
-    def generate_access_token(self, sub: str):
+    def generate_access_token(self, sub: str, role: str = "user"):
         return self.generate_token(
             expires_after=self.access_token_lifetime,
-            sub=sub
+            sub=sub,
+            role=role
         )
 
-    def generate_token(self, expires_after: timedelta, sub: str):
+    def generate_token(self, expires_after: timedelta, sub: str, role: str):
         iat = datetime.utcnow()
         payload = {
             "exp": iat + expires_after,
             "iat": iat,
             "sub": str(sub),
-            "role": "user"
+            "role": role
         }
-        logger.info(self.private_key)
         encode_jwt = jwt.encode(payload, self.private_key, algorithm="ES256")
         return encode_jwt
 
     def verify_token(self, token):
-        logger.info(self.public_key)
         # Key confusion attack
         payload = jwt.decode(token, self.public_key, algorithms=["ES256", "HS256"])
         return payload

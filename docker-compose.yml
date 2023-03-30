@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+
+  backend-service:
+    image: backend-service:0.0.1
+    container_name: backend-service
+    build:
+      context: ./backend-service
+    ports:
+      - 5000:5000
+    networks:
+      - backend
+    volumes:
+      - ./backend-service/app:/opt/app
+      - ./backend-service/config:/opt/config
+      - ./backend-service/secret:/opt/secret
+    environment:
+      SERVICE_ENV: ${SERVICE_ENV:-dev}
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-development}
+      SECRET_KEY_FILE: /opt/secret/jwt.key
+      PUBLIC_KEY_FILE: /opt/secret/jwt.pub
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15.2
+    container_name: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-development}"]
+    networks:
+      - backend
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-development}
+    restart: unless-stopped
+
+networks:
+  backend: {}
+  frontend: {}
+

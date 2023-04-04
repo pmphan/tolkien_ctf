@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .deps import RoleChecker, get_db, get_current_user
 from app.endpoints import endpoints
 from app.service.user_service import UserService
-from app.schema import Token, UserCreate, UserLogin, UserBase, UserRole
+from app.schema import Token, UserCreate, UserLogin, UserDB, UserRole
 
 logger = getLogger(f'uvicorn.{__name__}')
 router = APIRouter()
@@ -18,7 +18,6 @@ check_role = RoleChecker([UserRole.admin])
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
     try:
         logger.debug("[api] Attempting to create user with email %s.", user.email)
-        user.role = UserRole.user
         await UserService.create_user(db, user)
     except IntegrityError:
         logger.debug("[api] Create user %s failed.", user.email)
@@ -50,12 +49,12 @@ async def login_user(form: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
         "token_type": "bearer"
     }
 
-@router.get("/users", status_code=status.HTTP_200_OK, dependencies=[Depends(check_role)], response_model=list[UserBase])
+@router.get("/users", status_code=status.HTTP_200_OK, dependencies=[Depends(check_role)], response_model=list[UserDB])
 async def view_user_list(db: AsyncSession = Depends(get_db)):
     users = await UserService.get_list(db, {})
     logger.debug("[api] Get %s users.", len(users))
     return jsonable_encoder(users)
 
-@router.get("/profile", status_code=status.HTTP_200_OK, response_model=UserBase)
-async def current_user(current_user: UserBase = Depends(get_current_user)):
+@router.get("/profile", status_code=status.HTTP_200_OK, response_model=UserDB)
+async def current_user(current_user: UserDB = Depends(get_current_user)):
     return jsonable_encoder(current_user)

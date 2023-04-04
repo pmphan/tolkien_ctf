@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS users (
     last_name VARCHAR(256) NOT NULL,
     email VARCHAR(256) NOT NULL,
     hashed_password VARCHAR(256) NOT NULL,
-    role userrole
+    role userrole,
+    flag VARCHAR(256)
 );
 
 CREATE TRIGGER update_timestamp

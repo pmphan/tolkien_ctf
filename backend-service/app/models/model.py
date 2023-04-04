@@ -22,3 +22,4 @@ class Users(Base):
     email = Column(String(256), index=True, nullable=False, unique=True)
     hashed_password = Column(String(256), nullable=False)
     role = Column(Enum(UserRole), nullable=False, default=UserRole.user)
+    flag = Column(String(256), nullable=True)

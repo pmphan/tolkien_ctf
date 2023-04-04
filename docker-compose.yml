@@ -2,6 +2,19 @@ version: "3.9"
 
 services:
 
+  frontend-service:
+    image: frontend-service:0.0.1
+    container_name: frontend-service
+    build:
+      context: ./frontend-service
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
+    volumes:
+      - ./frontend-service/src:/opt/src
+    restart: unless-stopped
+
   backend-service:
     image: backend-service:0.0.1
     container_name: backend-service
@@ -10,6 +23,7 @@ services:
     ports:
       - 5000:5000
     networks:
+      - frontend
       - backend
     volumes:
       - ./backend-service/app:/opt/app

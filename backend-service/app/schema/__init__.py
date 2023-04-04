@@ -1,4 +1,5 @@
 from enum import IntEnum
+from typing import Optional
 from pydantic import BaseModel
 
 class UserRole(IntEnum):
@@ -9,7 +10,10 @@ class UserBase(BaseModel):
     email: str
     first_name: str
     last_name: str
+
+class UserDB(UserBase):
     role: UserRole = UserRole.user
+    flag: Optional[str]
 
 class UserCreate(UserBase):
     password: str

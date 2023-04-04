@@ -21,6 +21,8 @@ class UserService(BasePostgres[Users]):
     async def create_user(cls, db: AsyncSession, obj: UserCreate):
         obj_dict = obj.dict()
         password = obj_dict.pop("password")
+        # Force user role
+        obj_dict["role"] = "user"
         obj_dict["hashed_password"] = cls.hash_password(password)
         return await super().create(db, obj_dict)
 

@@ -2,8 +2,6 @@ import jwtDecode from "jwt-decode"
 import * as moment from "moment"
 import axios from "axios"
 
-import { config } from "../config"
-
 function localStorageTokenInterceptor(config) {
   let headers = {}
   const tokenString = localStorage.getItem("token")
@@ -15,8 +13,6 @@ function localStorageTokenInterceptor(config) {
       moment.unix(decodedAccessToken.exp).toDate() > new Date()
     if (isAccessTokenValid) {
       headers["Authorization"] = `Bearer ${token.access_token}`
-    } else {
-      alert('Your login session has expired. Please login again.')
     }
   }
   config["headers"] = headers
@@ -24,20 +20,16 @@ function localStorageTokenInterceptor(config) {
 }
 
 export class AuthenClient {
-	constructor(config) {
-		this.config = {
-			...config
-		}
-		this.apiClient = this.getApiClient(this.config);
-	}
-
+  constructor() {
+    this.apiClient = this.getApiClient();
+  }
 
   getApiClient(config) {
-		let initialConfig = { baseURL: `http://${config.authenUrl}/v1/auth`, timeout: 5000 }
-		let client = axios.create(initialConfig);
+    let initialConfig = { baseURL: "/api/v1/auth", timeout: 5000 }
+    let client = axios.create(initialConfig);
     client.interceptors.request.use(localStorageTokenInterceptor);
-		return client;
-	}
+    return client;
+  }
 
   async signup(data) {
     return await this.apiClient
@@ -79,5 +71,5 @@ export class AuthenClient {
   }
 }
 
-const authenClient = new AuthenClient(config);
+const authenClient = new AuthenClient();
 export default authenClient;

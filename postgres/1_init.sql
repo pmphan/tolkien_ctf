@@ -3,13 +3,15 @@ DROP TABLE IF EXISTS users;
 CREATE TYPE userrole AS ENUM ('admin', 'user');
 
 CREATE OR REPLACE FUNCTION update_timestamp_column()
-RETURNS TRIGGER AS $$
+    RETURNS TRIGGER
+    LANGUAGE 'plpgsql'
+AS $BODY$
 BEGIN
     NEW.update_time = current_timestamp;
     NEW.create_time = OLD.create_time;
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$BODY$;
 
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -17,11 +19,16 @@ CREATE TABLE IF NOT EXISTS users (
     update_time TIMESTAMPTZ DEFAULT current_timestamp,
     first_name VARCHAR(256) NOT NULL,
     last_name VARCHAR(256) NOT NULL,
-    email VARCHAR(256) NOT NULL,
+    email VARCHAR(256) UNIQUE NOT NULL,
     hashed_password VARCHAR(256) NOT NULL,
     role userrole,
     flag VARCHAR(256)
 );
+
+CREATE UNIQUE INDEX ix_users_email
+    ON users
+    USING btree
+    (email);
 
 CREATE TRIGGER update_timestamp
     BEFORE UPDATE ON users

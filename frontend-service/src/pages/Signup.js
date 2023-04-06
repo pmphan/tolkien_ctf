@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate, Navigate } from "react-router-dom"
+import { toast } from "react-toastify";
 
 import authenClient from "../clients/authenClient"
 import SubmitButton from "../components/form/SubmitButton"
@@ -9,7 +10,7 @@ import { useUserContext } from "../context/user"
 export default function Signup() {
   const [signupForm, setSignupForm] = useState({ email: '', password: '', first_name: '', last_name: ''});
   const navigate = useNavigate();
-  const { tokenValid, setTokenValid } = useUserContext();
+  const { checkTokenValid } = useUserContext();
 
   const onSignup = async (e) => {
     e.preventDefault();
@@ -17,16 +18,15 @@ export default function Signup() {
       .signup(signupForm)
       .then((response) => {
         navigate("/?signup");
-        setTokenValid(true);
-        alert(response);
+        checkTokenValid();
+        toast.success("Sign up successfully.");
       })
       .catch((error) => {
-        setTokenValid(false);
-        alert(error);
+        toast.error("Email already exists.");
       });
   };
 
-  return (tokenValid) ? (
+  return (checkTokenValid()) ? (
     <Navigate to="/?signup" />
   ) : (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

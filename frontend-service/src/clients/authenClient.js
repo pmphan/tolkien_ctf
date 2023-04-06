@@ -44,7 +44,6 @@ export class AuthenClient {
       .post("/signup", data)
       .then((resp) => {
         localStorage.setItem("token", JSON.stringify(resp.data));
-        return this.fetchUser();
       });
   }
 
@@ -62,7 +61,6 @@ export class AuthenClient {
       .post("/login", params)
       .then((resp) => {
         localStorage.setItem("token", JSON.stringify(resp.data));
-        return this.fetchUser();
       });
   }
 

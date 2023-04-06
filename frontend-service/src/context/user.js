@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import jwtDecode from "jwt-decode"
 import * as moment from "moment"
 
@@ -15,25 +15,21 @@ export function isValidToken() {
   };
 }
 
-const UserContext = createContext({
-  user: null,
-  tokenValid: false,
-  setTokenValid: isValidToken,
-  setUser: () => {}
-});
+const UserContext = createContext();
 
 export const useUserContext = () => useContext(UserContext);
 
 const UserProvider = ({ children }) => {
   const [tokenValid, setTokenValid] = useState(isValidToken());
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    isValidToken();
-  }, [tokenValid])
+  const checkTokenValid = () => {
+    let valid = isValidToken();
+    setTokenValid(valid);
+    return valid;
+  }
 
   return (
-    <UserContext.Provider value={{ user, setUser, tokenValid, setTokenValid }}>
+    <UserContext.Provider value={{ tokenValid, checkTokenValid, setTokenValid }}>
       {children}
     </UserContext.Provider>
   );

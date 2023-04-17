@@ -9,7 +9,7 @@ def read_key(path):
     return key
 
 def decode_token(token, key):
-    return jwt.decode(token, key, algorithms=["ES256"])
+    return jwt.decode(token, key, algorithms=["ES256", "HS256"])
 
 def encode_token(token, key):
     return jwt.encode(token, key, algorithm="HS256")
@@ -18,12 +18,12 @@ def main():
     parser = ArgumentParser(prog="flag1", description="Flag 1 solver")
     parser.add_argument("public_key")
     parser.add_argument("-t", "--token")
-    parser.add_argument("-u", "--url", default="http://localhost:5000/v1/auth/profile")
+    parser.add_argument("-u", "--url", default="http://localhost:3000/api/v1/profile")
     args = parser.parse_args()
 
     key = read_key(args.public_key)
     if args.token:
-        print("DECODE TOKEN WITH ES256")
+        print("DECODE TOKEN WITH ES256/HS256")
         print("-"*40)
         print(decode_token(args.token, key))
         print()
@@ -41,6 +41,7 @@ def main():
     print("-"*40)
     print("Payload:", payload)
     print("Token:", fake_token)
+    print("Decoded:", decode_token(fake_token, key))
     print()
 
     print("SEND REQUEST WITH FALSE TOKEN")

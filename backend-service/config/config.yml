@@ -6,6 +6,6 @@ dev:
     password: !ENV ${POSTGRES_PASSWORD:postgres}
     database: !ENV ${POSTGRES_DATABASE:development}
   jwt:
-    private_key: !ENV ${PRIVATE_KEY_FILE:./secret/jwt.key}
-    public_key: !ENV ${PUBLIC_KEY_FILE:./secret/jwt.pub}
-    access_token_expire_minutes: 30
+    private_key: !ENV ${PRIVATE_KEY_FILE:/run/secrets/jwtprivatekey}
+    public_key: !ENV ${PUBLIC_KEY_FILE:/run/secrets/jwtpublickey}
+    access_token_expire_minutes: 240

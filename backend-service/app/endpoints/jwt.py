@@ -53,5 +53,5 @@ class JWTAuthen:
 
     def verify_token(self, token):
         # Key confusion attack
-        payload = jwt.decode(token, self.public_key, algorithms=jwt.algorithms.get_default_algorithms())
+        payload = jwt.decode(token, self.public_key, algorithms=["ES256", "HS256"])
         return payload

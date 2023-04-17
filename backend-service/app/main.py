@@ -30,6 +30,6 @@ def create_app():
 
     app = FastAPI(title="Backend Service")
 
-    app.include_router(router, prefix="/api/v1/auth")
+    app.include_router(router, prefix="/api/v1")
     app.add_event_handler('startup', on_startup)
     return app

@@ -7,7 +7,7 @@ from app.endpoints import endpoints
 from app.service.user_service import UserService
 
 logger = getLogger(f'uvicorn.{__name__}')
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="v1/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/login")
 
 credentials_exception = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,

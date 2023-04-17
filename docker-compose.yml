@@ -12,6 +12,7 @@ services:
       - frontend
     secrets:
       - jwtpublickey
+      - flag
     ports:
       - 3000:80
     restart: unless-stopped
@@ -64,6 +65,8 @@ volumes:
 
 secrets:
   jwtprivatekey:
-    file: ./backend-service/secret/jwt.key
+    file: ./secret/jwt.key
   jwtpublickey:
-    file: ./backend-service/secret/jwt.pub
+    file: ./secret/jwt.pub
+  flag:
+    file: ./secret/flag

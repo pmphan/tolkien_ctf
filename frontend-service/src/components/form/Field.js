@@ -2,6 +2,7 @@ export default function Field({label, name, value, onChange, type = "text"}) {
   return (
     <div className="mb-4">
       <label htmlFor={ name } className="sr-only">{ label }</label>
+      <label className="block text-gray-700 text-left text-sm font-bold mb-2" htmlFor={ name }>{ label }</label>
       <input
         id={ name }
         name={ name }

@@ -10,7 +10,7 @@ import { useUserContext } from "../context/user"
 export default function Signup() {
   const [signupForm, setSignupForm] = useState({ email: '', password: '', first_name: '', last_name: ''});
   const navigate = useNavigate();
-  const { checkTokenValid } = useUserContext();
+  const { tokenValid, checkTokenValid } = useUserContext();
 
   const onSignup = async (e) => {
     e.preventDefault();
@@ -22,11 +22,11 @@ export default function Signup() {
         toast.success("Sign up successfully.");
       })
       .catch((error) => {
-        toast.error("Email already exists.");
+        toast.error(error.response.data.detail || "Something went wrong");
       });
   };
 
-  return (checkTokenValid()) ? (
+  return (tokenValid) ? (
     <Navigate to="/?signup" />
   ) : (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

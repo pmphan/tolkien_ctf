@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 export default function Login() {
   const [loginForm, setLoginForm] = useState({ email: '', password: ''})
   const navigate = useNavigate();
-  const { checkTokenValid } = useUserContext();
+  const { tokenValid, checkTokenValid } = useUserContext();
 
   const onLogin = async (e) => {
     e.preventDefault();
@@ -23,11 +23,11 @@ export default function Login() {
         toast.success("Login successfully.");
       })
       .catch((error) => {
-        toast.error("Wrong email password combination.");
+        toast.error(error.response.data.detail || "Something went wrong.");
       })
   };
 
-  return (checkTokenValid()) ? (
+  return (tokenValid) ? (
     <Navigate to="/?login" />
   ) : (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

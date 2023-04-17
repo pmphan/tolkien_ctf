@@ -25,7 +25,7 @@ export class AuthenClient {
   }
 
   getApiClient(config) {
-    let initialConfig = { baseURL: "/api/v1/auth", timeout: 5000 }
+    let initialConfig = { baseURL: "/api/v1", timeout: 5000 }
     let client = axios.create(initialConfig);
     client.interceptors.request.use(localStorageTokenInterceptor);
     return client;
@@ -63,6 +63,10 @@ export class AuthenClient {
         localStorage.setItem("user", JSON.stringify(data));
         return data
     })
+  }
+
+  async sendAnswer(data) {
+    return await this.apiClient.post("/riddle", data);
   }
 
   logout() {

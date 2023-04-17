@@ -1,7 +1,7 @@
-FROM node:current-alpine AS development
+FROM node:current-alpine AS dev
 
 ENV CI=true
-ENV PORT=3000
+ENV PORT=80
 
 WORKDIR /opt
 COPY package.json package-lock.json .
@@ -11,10 +11,11 @@ COPY . .
 
 CMD [ "npm", "start" ]
 
-FROM development AS build
+FROM dev AS build
 RUN npm run build
 
-FROM nginx:mainline-alpine
+FROM nginx:mainline-alpine as prod
 COPY --from=build /opt/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /opt/build /usr/share/nginx/html
+COPY src/images /images
 CMD ["nginx", "-g", "daemon off;"]

@@ -16,9 +16,9 @@ def encode_token(token, key):
 
 def main():
     parser = ArgumentParser(prog="flag1", description="Flag 1 solver")
-    parser.add_argument("public_key")
-    parser.add_argument("-t", "--token")
-    parser.add_argument("-u", "--url", default="http://localhost:3000/api/v1/profile")
+    parser.add_argument("public_key", help="The public key file.")
+    parser.add_argument("-t", "--token", help="Decode this token with supplied key if provided.")
+    parser.add_argument("-u", "--url", default="http://localhost:3000/api/v1/profile", help="URL to the authen API.")
     args = parser.parse_args()
 
     key = read_key(args.public_key)

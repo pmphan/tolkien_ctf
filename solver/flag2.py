@@ -15,9 +15,9 @@ def encode_token(token, key):
     return jwt.encode(token, key, algorithm="HS256")
 
 def main():
-    parser = ArgumentParser(prog="flag1", description="Flag 1 solver")
-    parser.add_argument("public_key")
-    parser.add_argument("-u", "--url", default="http://localhost:3000/api/v1/riddle")
+    parser = ArgumentParser(prog="flag2", description="Flag 2 solver")
+    parser.add_argument("public_key", help="The public key file.")
+    parser.add_argument("-u", "--url", default="http://localhost:3000/api/v1/riddle", help="URL to the authen API.")
     args = parser.parse_args()
 
     key = read_key(args.public_key)
@@ -57,8 +57,8 @@ def main():
     print("-"*40)
     print("URL:", args.url)
     resp = requests.post(args.url, json={"answer": payload1}, headers={"Authorization": f"Bearer {fake_token}"})
-    print(f"Response {eval(command1)}:", str(resp.content))
+    print(f"Response {eval(command1)}:", resp.content.decode())
     resp = requests.post(args.url, json={"answer": payload2}, headers={"Authorization": f"Bearer {fake_token}"})
-    print(f"Response {eval(command2)}:", str(resp.content))
+    print(f"Response {eval(command2)}:", resp.content.decode())
 
 main()

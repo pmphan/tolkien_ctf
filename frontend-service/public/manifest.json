@@ -1,6 +1,7 @@
 {
   "short_name": "CTF",
-  "name": "Just a CTF website",
+  "name": "CTF Website",
+  "description": "Just a CTF website",
   "icons": [
     {
       "src": "favicon.ico",

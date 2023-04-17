@@ -3,16 +3,17 @@ version: "3.9"
 services:
 
   frontend-service:
-    image: frontend-service:0.0.1
+    image: frontend-service:0.0.1-${FRONTEND_ENV:-dev}
     container_name: frontend-service
     build:
       context: ./frontend-service
+      target: ${FRONTEND_ENV:-dev}
     networks:
       - frontend
+    secrets:
+      - jwtpublickey
     ports:
       - 3000:80
-    volumes:
-      - ./frontend-service/src:/opt/src
     restart: unless-stopped
 
   backend-service:
@@ -23,20 +24,15 @@ services:
     networks:
       - frontend
       - backend
-    ports:
-      - 5000:5000
-    volumes:
-      - ./backend-service/app:/opt/app
-      - ./backend-service/config:/opt/config
-      - ./backend-service/secret:/opt/secret
+    secrets:
+      - jwtpublickey
+      - jwtprivatekey
     environment:
-      SERVICE_ENV: ${SERVICE_ENV:-dev}
+      SERVICE_ENV: ${BACKEND_ENV:-dev}
       POSTGRES_HOST: postgres
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-development}
-      SECRET_KEY_FILE: /opt/secret/jwt.key
-      PUBLIC_KEY_FILE: /opt/secret/jwt.pub
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,6 +46,7 @@ services:
     networks:
       - backend
     volumes:
+      - postgresdata:/var/lib/postgresql/data
       - ./postgres:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -57,18 +54,16 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-development}
     restart: unless-stopped
 
-  pgadmin:
-    image: dpage/pgadmin4:6.21
-    container_name: pgadmin
-    networks:
-      - backend
-    ports:
-      - 8080:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pg@ad.min
-      PGADMIN_DEFAULT_PASSWORD: pgadmin
-    restart: unless-stopped
-
 networks:
   frontend: {}
   backend: {}
+
+volumes:
+  postgresdata:
+    driver: local
+
+secrets:
+  jwtprivatekey:
+    file: ./backend-service/secret/jwt.key
+  jwtpublickey:
+    file: ./backend-service/secret/jwt.pub

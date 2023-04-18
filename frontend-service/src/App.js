@@ -17,9 +17,9 @@ function App() {
   return (
     <UserProvider>
       <BrowserRouter>
-        <div className="text-center">
-          <Navbar />
-          <ToastContainer />
+        <Navbar />
+        <div className="container mx-auto text-center">
+          <ToastContainer autoClose={1000} pauseOnFocusLoss={false} newestOnTop={true} pauseOnHover={false} draggable={false}/>
           <Routes>
             <Route exact path="/" element={ <Home/> } />
             <Route exact path="/hints" element={ <Hints/> } />

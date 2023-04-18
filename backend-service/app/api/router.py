@@ -64,7 +64,7 @@ async def current_user(current_user: UserDB = Depends(get_current_user)):
 
 @router.post("/riddle", status_code=status.HTTP_200_OK, dependencies=[Depends(check_role)], response_model=str)
 async def check_answer(guess: Guess):
-    regex = "[0-9\"\']|request|self|class|config|flag"
+    regex = "[0-9\"\']|request|self|class|config|flag|builtin"
     if "{{" in guess.answer and re.search(regex, guess.answer):
         return "Nice try, you are on the right track, but we filter out any input matching regex %s." % regex
 
@@ -74,8 +74,8 @@ Many times he repeated these words in different order, or varied them. Then he t
 {% else %}
 Slowly the door divided in the middle and swung outwards inch by inch, until both doors lay back against the wall. Through the opening a shadowy stair could be seen climbing steeply up; but beyond the lower steps the darkness was deeper than the night.
 {% endif %}"""
-    template = Template(template_str, autoescape=False)
     try:
+        template = Template(template_str, autoescape=False)
         return template.render(answer=guess.answer, true_answer="mellon")
     except Exception as e:
         return f"{e.__class__.__qualname__}: {e}"

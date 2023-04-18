@@ -39,11 +39,11 @@ export default function Profile() {
         <div className="space-y-1">
           <span className="flex space-x-2">
             <strong>Email: </strong>
-            <span className="dark:text-gray-400">{ user.email }</span>
+            <p className="dark:text-gray-400">{ user.email }</p>
           </span>
           <span className="flex space-x-2">
             <strong>Flag: </strong>
-            <span className="dark:text-gray-400">{ user.flag ? user.flag : "Log in as admin to see flag (email: adminery@admin.com)" }</span>
+            <p className="dark:text-gray-400">{ user.flag ? user.flag : "Log in as admin to see flag (email: adminery@admin.com)" }</p>
           </span>
         </div>
       </div>

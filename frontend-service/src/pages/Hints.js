@@ -42,8 +42,8 @@ export default function Hints() {
       <h2 className="text-2xl">Flag 2</h2>
       <div className="space-y-2">
         <p className="italic">Can you figure out what template was used to render the result?</p>
-        <p>After you have found all the flag, concatenate then into one using the underscore _ character and wrap them inside CTF_SDaT{}</p>
-        <p>For example, if the three flags are CTF_SDaT&#123;flag0&#125;, CTF_SDaT&#123;flag1&#125;, CTF_SDaT&#123;flag2&#125; respectively, the final flag is CTF_SDaT&#123;flag0_flag1_flag2&#125;</p>
+        <p>After you have found all the flag, concatenate then into one using the underscore _ character and wrap them inside CTF_SDaT&#123;&#125;.</p>
+        <p>For example, if the three flags are CTF_SDaT&#123;flag0&#125;, CTF_SDaT&#123;flag1&#125;, CTF_SDaT&#123;flag2&#125; respectively, the final flag is <strong>CTF_SDaT&#123;flag0_flag1_flag2&#125;</strong>.</p>
       </div>
     </div>
   </>

@@ -65,7 +65,7 @@ async def current_user(current_user: UserDB = Depends(get_current_user)):
 @router.post("/riddle", status_code=status.HTTP_200_OK, dependencies=[Depends(check_role)], response_model=str)
 async def check_answer(guess: Guess):
     regex = "[0-9\"\']|request|self|class|config|flag|builtin"
-    if "{{" in guess.answer and re.search(regex, guess.answer):
+    if "{" in guess.answer and re.search(regex, guess.answer):
         return "Nice try, you are on the right track, but we filter out any input matching regex %s." % regex
 
     template_str = """Picking up his staff Mithrandir stood before the rock and said in a clear voice: """ + guess.answer + """.

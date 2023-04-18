@@ -16,7 +16,7 @@ description: |
 
   $ `ssh -L localhost:8080:frontend-service:80 -p 56151 user@cs561.cs.umass.edu`
 
-  This will forward the local port 8080 on your machine to `frontend-service:54321` on the swarm network, where this challenge is hosted.
+  This will forward the local port 8080 on your machine to `frontend-service:80` on the swarm network, where this challenge is hosted.
 
   Now, open the website at `http://localhost:8080` to access the challenge.
 

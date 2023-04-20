@@ -1,3 +1,3 @@
-# Authentication Service
+# Backend Service
 
-Authentication service for academic app.
+_Backend using FastAPI_

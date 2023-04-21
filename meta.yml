@@ -1,22 +1,22 @@
-name: JRRT
+name: Solve A Riddle
 description: |
-  author: [Phuong Phan](https://github.com/pmphan)
+  author: [Phuong Phan]()
 
-  Here's a simple website with a simple riddle you can try to solve. There's also a page somewhere you can access for the flag hints.
+  Here's a simple website with a simple riddle you can try to solve. Can you find the page containing the hints for the flag?
 
   **Connection Instructions**:
 
   Do the following:
 
-  $ `ssh -L localhost:<local port>:frontend-service:80 -p 56151 <username>@cs561.cs.umass.edu`
+  $ `ssh -L localhost:<local port>:solve-a-riddle:80 -p 56151 <username>@cs561.cs.umass.edu`
 
   Now you can connect to `http://localhost:<local port>` to access the challenge.
 
   For example, run
 
-  $ `ssh -L localhost:8080:frontend-service:80 -p 56151 user@cs561.cs.umass.edu`
+  $ `ssh -L localhost:8080:solve-a-riddle:80 -p 56151 user@cs561.cs.umass.edu`
 
-  This will forward the local port 8080 on your machine to `frontend-service:80` on the swarm network, where this challenge is hosted.
+  This will forward the local port 8080 on your machine to `solve-a-riddle:80` on the swarm network, where this challenge is hosted.
 
   Now, open the website at `http://localhost:8080` to access the challenge.
 
@@ -27,4 +27,4 @@ category: Web
 flag: CTF_SDaT{N91nx_41145_JW7_4160r17HM5_J1NJ4_73MP1471N6}
 
 # administrative
-container_name: frontend-service
+container_name: solve-a-riddle

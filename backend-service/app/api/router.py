@@ -52,12 +52,6 @@ async def login_user(form: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
         "token_type": "bearer"
     }
 
-@router.get("/users", status_code=status.HTTP_200_OK, dependencies=[Depends(check_role)], response_model=list[UserDB])
-async def view_user_list(db: AsyncSession = Depends(get_db)):
-    users = await UserService.get_list(db, {})
-    logger.debug("[api] Get %s users.", len(users))
-    return jsonable_encoder(users)
-
 @router.get("/profile", status_code=status.HTTP_200_OK, response_model=UserDB)
 async def current_user(current_user: UserDB = Depends(get_current_user)):
     return jsonable_encoder(current_user)

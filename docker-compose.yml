@@ -4,7 +4,7 @@ services:
 
   frontend-service:
     image: frontend-service:0.0.1-${FRONTEND_ENV:-prod}
-    container_name: frontend-service
+    container_name: solve-a-riddle
     build:
       context: ./frontend-service
       target: ${FRONTEND_ENV:-prod}

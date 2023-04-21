@@ -8,4 +8,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["uvicorn", "app.main:create_app", "--host", "0.0.0.0", "--port", "5000", "--factory", "--reload"]
+ENV USER dockeruser
+RUN useradd -m $USER
+USER $USER
+
+CMD ["uvicorn", "app.main:create_app", "--host", "0.0.0.0", "--port", "5000", "--factory"]

@@ -44,6 +44,8 @@ services:
     container_name: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-development}"]
+      interval: 2s
+      retries: 10
     networks:
       - backend
     volumes:
